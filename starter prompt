@@ -1,0 +1,55 @@
+Plan a first working SQL Server-to-PostgreSQL stored-procedure remediation workflow using this repository and its existing tools.
+
+Context:
+
+- Infosys Data Migration Tool (IDS) has failed to convert approximately 40–50% of our stored procedures.
+- Existing CLI tools can connect to SQL Server and PostgreSQL, retrieve database objects, and perform some deployment/testing operations.
+- IDS conversion status and error details are available through a database query.
+- My goal is semi-automated conversion: discover a failed procedure, retrieve its context, convert it, validate it, and provide a package for developer review.
+
+For this planning step, inspect the repository and existing tool implementations. Do not modify files, deploy SQL, or execute stored procedures. Do not expose credentials or sensitive data. Identify any database metadata queries needed and the environments they would access.
+
+First, establish what already exists:
+
+1. Inventory the relevant tools, entry points, configuration, and tests.
+2. Identify which tools can retrieve IDS failures, source definitions, dependencies, target schemas, and .NET call sites.
+3. Identify how deployment and testing currently work, including environment selection and cleanup.
+4. Distinguish implemented capabilities from stubs, assumptions, and missing functionality. Cite relevant repository paths.
+5. Reuse the existing language and project structure unless there is a concrete reason to change them.
+
+Then propose the smallest end-to-end implementation for ONE failed procedure:
+
+- Select the procedure by an explicit identifier.
+- Retrieve IDS diagnostics and any partial conversion.
+- Retrieve the original SQL Server definition, parameter metadata, referenced objects, and relevant source-to-target schema mappings.
+- Record unresolved dependencies, including dynamic SQL.
+- Capture source and target database versions.
+- Establish the behavioral contract: inputs, result sets, output parameters, return values, database changes, transactions, and errors.
+- Decide whether the target should be a PostgreSQL function or procedure and document the reason.
+- Have Copilot generate the conversion using this context.
+- Save the candidate SQL and application-impact notes.
+- Deploy only to an explicitly configured isolated PostgreSQL test environment.
+- Compare source and target behavior using equivalent test fixtures in isolated environments.
+- Produce a review report that clearly separates passed, failed, blocked, and untested checks.
+
+Design requirements:
+
+- Copilot performs conversion and interprets failures; deterministic tools execute operations, compare results, and record evidence.
+- Persist workflow state outside the chat.
+- Associate evidence with the exact source and candidate hashes.
+- Do not mark a conversion validated merely because deployment succeeds.
+- Do not change expected results or weaken comparisons to make a conversion pass.
+- Do not assume transaction rollback can clean up every procedure.
+- Keep source metadata access separate from test execution permissions.
+- Preserve IDS status separately from our remediation status.
+- Avoid adding multiple agents, MCP servers, background workers, or a framework unless needed for this first workflow.
+
+Return:
+
+1. A concise inventory of existing capabilities.
+2. The gaps required for this one-procedure workflow.
+3. A numbered implementation plan with proposed files and acceptance criteria.
+4. The proposed command or Copilot interaction for running it.
+5. Only the questions that genuinely block implementation.
+
+Stop after presenting the plan.
