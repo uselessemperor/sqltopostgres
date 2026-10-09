@@ -2,9 +2,9 @@ Plan a first working SQL Server-to-PostgreSQL stored-procedure remediation workf
 
 Context:
 
-- Infosys Data Migration Tool (IDS) has failed to convert approximately 40–50% of our stored procedures.
+
 - Existing CLI tools can connect to SQL Server and PostgreSQL, retrieve database objects, and perform some deployment/testing operations.
-- IDS conversion status and error details are available through a database query.
+- tool conversion status and error details are available through a database query.
 - My goal is semi-automated conversion: discover a failed procedure, retrieve its context, convert it, validate it, and provide a package for developer review.
 
 For this planning step, inspect the repository and existing tool implementations. Do not modify files, deploy SQL, or execute stored procedures. Do not expose credentials or sensitive data. Identify any database metadata queries needed and the environments they would access.
@@ -12,7 +12,7 @@ For this planning step, inspect the repository and existing tool implementations
 First, establish what already exists:
 
 1. Inventory the relevant tools, entry points, configuration, and tests.
-2. Identify which tools can retrieve IDS failures, source definitions, dependencies, target schemas, and .NET call sites.
+2. Identify which tools can retrieve tool failures, source definitions, dependencies, target schemas, and .NET call sites.
 3. Identify how deployment and testing currently work, including environment selection and cleanup.
 4. Distinguish implemented capabilities from stubs, assumptions, and missing functionality. Cite relevant repository paths.
 5. Reuse the existing language and project structure unless there is a concrete reason to change them.
@@ -20,7 +20,7 @@ First, establish what already exists:
 Then propose the smallest end-to-end implementation for ONE failed procedure:
 
 - Select the procedure by an explicit identifier.
-- Retrieve IDS diagnostics and any partial conversion.
+- Retrieve tool diagnostics and any partial conversion.
 - Retrieve the original SQL Server definition, parameter metadata, referenced objects, and relevant source-to-target schema mappings.
 - Record unresolved dependencies, including dynamic SQL.
 - Capture source and target database versions.
